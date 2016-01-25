@@ -5,9 +5,15 @@ function Parser () {
 	 * @url 	{String}
 	 * @return 	{String}
 	 */
-	this.getTitle = function (url){
+	this.getTitle = function (url){	
+		var re = /chartTitle=([a-z]*)/i;
+		var title = url.match(re);
 
-	}
+		if(title !== null)
+			return title[1];
+		else
+			return "";
+	};
 
 	/** 
 	 * Return the sensors' type
@@ -16,7 +22,7 @@ function Parser () {
 	 */
 	this.getType = function (url) {
 
-	}
+	};
 
 	/**
 	 * Format data for HighChart accepted format
@@ -25,5 +31,5 @@ function Parser () {
 	 */
 	this.responseForChart = function (data) {
 
-	}
+	};
 }
