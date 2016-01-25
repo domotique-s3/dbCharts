@@ -6,15 +6,19 @@ Branche de developpement et de test de la partie Front de dbCharts
 
 ### NodeJS
 
-Telecharger et installer [node.js](https://nodejs.org/en/).
+Telecharger et installer NodeJS 
 
-Vous pouvez aussi utiliser `sudo apt-get install npm`.
+**WINDOWS** : [node.js](https://nodejs.org/en/).
+
+**UNIX** : `sudo apt-get install npm`.
 
 ## Configuration
 
 Lancer les commandes suivantes a la racine du projet : 
 
-`npm install mocha chai --save-dev`
+**WINDOWS** : `npm install mocha chai --save-dev` 
+
+**UNIX** : `sudo apt-get install mocha`
 
 ## Utilisation
 
