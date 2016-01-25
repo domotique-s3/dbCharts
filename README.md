@@ -18,7 +18,9 @@ Lancer les commandes suivantes a la racine du projet :
 
 **WINDOWS** : `npm install mocha chai --save-dev` 
 
-**UNIX** : `sudo apt-get install mocha`
+**UNIX** : 
+ 1. `npm install chai --save-dev`
+ 2. `sudo apt-get install mocha`
 
 ## Utilisation
 
