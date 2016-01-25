@@ -10,17 +10,19 @@ Telecharger et installer NodeJS
 
 **WINDOWS** : [node.js](https://nodejs.org/en/).
 
-**UNIX** : `sudo apt-get install npm`.
+**UNIX** : 
+
+1. `curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -`. (curl prérequis)
+2. `sudo apt-get install nodejs`
 
 ## Configuration
 
 Lancer les commandes suivantes a la racine du projet : 
 
-**WINDOWS** : `npm install mocha chai --save-dev` 
+**WINDOWS** ou **UNIX** :
 
-**UNIX** : 
- 1. `npm install chai --save-dev`
- 2. `sudo apt-get install mocha`
+ 1. `npm install -g mocha`
+ 2. `npm install chai`
 
 ## Utilisation
 
