@@ -8,6 +8,8 @@ Branche de developpement et de test de la partie Front de dbCharts
 
 Telecharger et installer [node.js](https://nodejs.org/en/).
 
+Vous pouvez aussi utiliser `sudo apt-get install npm`.
+
 ## Configuration
 
 Lancer les commandes suivantes a la racine du projet : 
