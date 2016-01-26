@@ -97,4 +97,33 @@ function Parser () {
 		});
 		return formattedSensors;
 	};
+
+	/**
+	 * Remove sensors type in string (1_t)
+	 * @param  {string} str 
+	 * @return {string}
+	 */
+	this.removeSensorsType = function (str) {
+		var regex_replace = /(\d)_(\D)/gmi; 
+		var regex_findSensor = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
+
+		var res;
+		var replace = [];
+
+		while ((res = regex_findSensor.exec(str)) !== null) {
+		    if (res.index === regex_findSensor.lastIndex) {
+		        regex_findSensor.lastIndex++;
+		    }
+		    replace.push({
+		    	origin : res[0],
+		    	sensor : res[2]
+		    })
+		}
+
+		$.each(replace, function(index, val) {
+			str = str.replace(val.origin, val.origin.replace(val.sensor, val.sensor.replace(regex_replace, '$1')))
+		});
+
+		return str;
+	}
 }

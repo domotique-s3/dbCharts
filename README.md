@@ -22,8 +22,7 @@ Lancer les commandes suivantes a la racine du projet :
 **WINDOWS** ou **UNIX** :
 
  1. `npm install -g mocha`
- 2. `npm install chai`
- 3. `npm install jquery`
+ 2. `npm install`
 
 ## Utilisation
 

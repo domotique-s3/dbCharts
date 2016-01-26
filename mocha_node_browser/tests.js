@@ -6,8 +6,8 @@ if (typeof require !== 'undefined') {
 	var path = './js/Parser.js';
 	var code = fs.readFileSync(path);
 	vm.runInThisContext(code);
-} else {
 }
+
 var expect = chai.expect;
 var parser = new Parser();
 
@@ -19,6 +19,19 @@ describe('Parser', function() {
 		});
 		it('should return \'\'', function () {
 			expect(parser.getTitle('index.html?sensors=[1,2,3]&sensorsColumn=value')).to.equal("");
+		});
+	});
+
+	describe('remove_sensors_type', function () {
+
+		var url = 'sensors[table1]=[1_l,2_b,3_f,4_c]&sensors[table2]=[5_l,6_g,7_r,8_b]&';
+		var result = parser.removeSensorsType(url);
+		
+		it('result should be a string', function () {
+			expect(result).to.be.a("string");
+		});
+		it('In this case, result should be \'sensors[table1]=[1,2,3,4]&sensors[table2]=[5,6,7,8]&\'', function () {
+			expect(result).to.equal("sensors[table1]=[1,2,3,4]&sensors[table2]=[5,6,7,8]&");
 		});
 	});
 
