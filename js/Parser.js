@@ -6,13 +6,48 @@ function Parser () {
 	 * @return 	{String}
 	 */
 	this.getTitle = function (url){	
-		var re = /chartTitle=([a-z]*)/i;
-		var title = url.match(re);
+		var regex = /chartTitle=([a-z]*)/i;
+		var title = url.match(regex);
 
 		if(title !== null)
 			return title[1];
 		else
 			return "";
+	};
+
+	var getSensorsByTable = function (url) {
+		var regex = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
+		var res;
+
+		var rtn = {};
+
+		while ((res = regex.exec(url)) !== null) {
+		    if (res.index === regex.lastIndex) {
+		        regex.lastIndex++;
+		    }
+		    rtn[res[1]] = res[2];
+		}
+
+		return rtn;
+	};
+
+	var getSensorsByType = function (str) {
+		var regex = /(\d)_(\D)/gmi; 
+		var res;
+		 
+		var rtn = [];
+
+		while ((res = regex.exec(str)) !== null) {
+		    if (res.index === regex.lastIndex) {
+		        regex.lastIndex++;
+		    }
+		    rtn.push({
+		    	id : res[1],
+		    	type : res[2]
+		   	});
+		}
+
+		return rtn;
 	};
 
 	/** 
@@ -21,15 +56,22 @@ function Parser () {
 	 * @return 	{Object}
 	 */
 	this.getType = function (url) {
+		var sensorsByTable = getSensorsByTable(url);
 
+		$.each(sensorsByTable, function(index, val) {
+			sensorsByTable[index] = getSensorsByType(val);
+		});
+
+		return sensorsByTable;
 	};
 
 	/**
 	 * Format data for HighChart accepted format
 	 * @data	{Object}
+	 * @type	{Object}
 	 * @return 	{Object}
 	 */
-	this.responseForChart = function (data) {
+	this.responseForChart = function (data, type) {
 		var formattedSensors = [];
 		$.each(data, function(tableName, sensors) {
 			$.each(sensors, function(id, series) {

@@ -21,11 +21,37 @@ describe('Parser', function() {
 			expect(parser.getTitle('index.html?sensors=[1,2,3]&sensorsColumn=value')).to.equal("");
 		});
 	});
+
 	describe('get_type', function () {
-		it('TODO', function () {
-			expect('TODO').to.equal('');
+		var url = 'sensors[table1]=[1_l,2_b,3_f,4_c]&sensors[table2]=[5_l,6_g,7_r,8_b]&';
+		var result = parser.getType(url);
+		console.log(result);
+		it('result shoud be an object', function () {
+			expect(result).to.be.a('object');
+		});
+		it('result shoud have property table1 and table2', function () {
+			expect(result).to.have.property('table1');
+			expect(result).to.have.property('table2');
+		});
+		it('result.table1 and result.table2 should be array', function () {
+			expect(result.table1,result.table2).to.be.a('array');
+		});
+		it('In this case, result.table1 and result.table2 length have to be 4', function () {
+			expect(result.table1,result.table2).to.have.length(4);
+		});
+		it('result.table1[x] and result.table2[x] should be object', function () {
+			expect(result.table1[0],result.table2[0]).to.be.a('object');
+		});
+		it('result.table1[x] and result.table2[x] should have property id and type', function () {
+			expect(result.table1[0], result.table2[0]).to.have.property('id');
+			expect(result.table1[0], result.table2[0]).to.have.property('type');
+		});
+		it('In this case, result.table1[0].id and result.table1[0].type should be 1 and l', function () {
+			expect(result.table1[0].id).to.equal('1');
+			expect(result.table1[0].type).to.equal('l');
 		});
 	});
+
 	describe('response_for_chart', function () {
 		var response = {
 			'table1' : {
@@ -57,6 +83,7 @@ describe('Parser', function() {
 		};
 
 		var format = parser.responseForChart(response);
+
 		it('response should be an array', function(){
 			expect(format).to.be.a('array');
 		});
