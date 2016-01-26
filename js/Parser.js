@@ -45,16 +45,21 @@ function Parser () {
 		var regex = /(\d)_(\D)/gmi; 
 		var res;
 		 
-		var rtn = [];
+		var rtn = {};
 
 		while ((res = regex.exec(str)) !== null) {
 		    if (res.index === regex.lastIndex) {
 		        regex.lastIndex++;
 		    }
-		    rtn.push({
-		    	id : res[1],
-		    	type : res[2]
-		   	});
+
+		    if(res[2] === 'l' || res[2] === 'line')
+		    	rtn[res[1]] = 'line';
+		    else if(res[2] === 'b' || res[2] === 'binary')
+		    	rtn[res[1]] = 'binary';
+		    else if(res[2] === 'c' || res[2] === 'column')
+		    	rtn[res[1]] = 'column';
+		    else
+		    	rtn[res[1]] = 'line';
 		}
 
 		return rtn;
@@ -88,6 +93,20 @@ function Parser () {
 			    var temp = {};
 			    temp.data = [];
 			    temp.name = tableName + '.' + id;
+
+			    if(
+			    	!(typeof type === 'undefined' || type === null) && 
+			    	!(typeof type[tableName] === 'undefined' || type[tableName] === null) &&
+			    	!(typeof type[tableName][id] === 'undefined' || type[tableName][id] === null)
+			    ){
+			    	if(type[tableName][id] == 'binary'){
+			    		temp.type = "line";
+			    		temp.step = 'left';
+			    	} else {
+			    		temp.type = type[tableName][id];
+			    	}
+			    }
+
 			    $.each(series, function(k, serie) {
 			        temp.data.push([parseFloat(serie.timestamp) / 100, parseFloat(serie.value)]);
 			    });
@@ -117,13 +136,13 @@ function Parser () {
 		    replace.push({
 		    	origin : res[0],
 		    	sensor : res[2]
-		    })
+		    });
 		}
 
 		$.each(replace, function(index, val) {
-			str = str.replace(val.origin, val.origin.replace(val.sensor, val.sensor.replace(regex_replace, '$1')))
+			str = str.replace(val.origin, val.origin.replace(val.sensor, val.sensor.replace(regex_replace, '$1')));
 		});
 
 		return str;
-	}
+	};
 }
