@@ -1,0 +1,26 @@
+{
+  "name": "dbcharts",
+  "version": "0.0.1",
+  "description": "Create charts",
+  "main": "mocha_node_browser/index.html",
+  "devDependencies": {
+    "jquery": "^2.2.0",
+    "highcharts": "^4.2.1",
+    "jsdom": "^7.2.2",
+    "mocha": "^2.3.4",
+    "chai": "^3.4.1"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domotique-s3/dbCharts.git"
+  },
+  "author": "kbn1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/domotique-s3/dbCharts/issues"
+  },
+  "homepage": "https://github.com/domotique-s3/dbCharts#readme"
+}

@@ -1,15 +1,13 @@
 if (typeof require !== 'undefined') {
 	var chai = require('chai');
-
+	
 	var fs = require('fs');
 	var vm = require('vm');
-
 	var path = './js/Parser.js';
 	var code = fs.readFileSync(path);
 	vm.runInThisContext(code);
 } else {
 }
-
 var expect = chai.expect;
 var parser = new Parser();
 
