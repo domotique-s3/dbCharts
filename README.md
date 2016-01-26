@@ -23,7 +23,14 @@ Lancer les commandes suivantes a la racine du projet :
 
  1. `npm install -g mocha`
  2. `npm install chai`
+ 3. `npm install jquery`
 
 ## Utilisation
 
-Lancer la commande `mocha test` qui executera tout les tests present dans le dossier test
+Ouvrir dans votre navigateur le index.html présent dans mocha_node_browser
+
+*ou*
+
+Lancer la commande `mocha mocha_node_browser/tests.js` qui executera tout les tests
+
+**Attention** : le mode console ne permet pas l'utilisation de JQuery

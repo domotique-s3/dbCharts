@@ -30,6 +30,19 @@ function Parser () {
 	 * @return 	{Object}
 	 */
 	this.responseForChart = function (data) {
-
+		var formatedSensors = [];
+		$.each(data, function(tableName, sensors) {
+			$.each(sensors, function(id, series) {
+			    var temp = {};
+			    temp.data = [];
+			    temp.name = tableName + '.' + id;
+			    $.each(series, function(k, serie) {
+			        temp.data.push([parseFloat(serie.timestamp) / 100, parseFloat(serie.value)]);
+			    });
+			    
+			    formatedSensors.push(temp);
+			});
+		});
+		return formatedSensors;
 	};
 }
