@@ -43,8 +43,6 @@ function Parser () {
 	 		rtn[res[1]] += (',' + res[2]);
 		}
 
-		console.log(rtn);
-
 		return rtn;
 	};
 
@@ -73,8 +71,6 @@ function Parser () {
 		    else
 		    	rtn[res[1]] = 'line';
 		}
-
-		console.log(rtn);
 
 		return rtn;
 	};
@@ -169,7 +165,6 @@ function Parser () {
 		$.each(replace, function(index, val) {
 			str = str.replace(val.origin, val.origin.replace(val.sensor, val.sensor.replace(regex_replace, '$1')));
 		});
-		console.log(str);
 		return str;
 	};
 }

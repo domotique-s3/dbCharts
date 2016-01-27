@@ -9,7 +9,10 @@ if (typeof require !== 'undefined') {
 }
 
 var expect = chai.expect;
+var should = chai.should();
+
 var parser = new Parser();
+var request = new Request();
 
 describe('Parser', function() {
 
@@ -190,7 +193,6 @@ describe('Parser', function() {
 			expect(format[0].step).to.equal('left');
 			expect(format[0].type).to.equal('line');
 		});
-		console.log(format[2]);
 		it('sensors table2.30 step and type should be undefined and column', function () {
 			expect(format[2].type).to.equal('column');
 			expect(format[2].step).to.equal(undefined);
@@ -198,16 +200,56 @@ describe('Parser', function() {
 	});
 });
 
-describe('Chart', function() {
+describe('Request', function() {
 
-	describe('TODO', function () {
-		it('TODO', function () {
-			expect('TODO').to.equal('');
+	describe('send', function () {
+		it('should be SUCESS', function (done) {
+			request.send('ajax_test_success.php').then(
+			    function (result) {
+					expect(result).to.be.equal("SUCCESS");
+					done();
+			    },
+			    function (err) {
+					expect(err).to.be.equal("ERROR");
+					done();
+			    }
+			);
+		});
+		it('should be ERROR', function (done) {
+			request.send('ajax_test_error.php').then(
+			    function (result) {
+					expect(result).to.be.equal("SUCCESS");
+					done();
+			    },
+			    function (err) {
+			    	console.log(err);
+			    	expect(err.status).to.be.equal(500);
+					expect(err.responseText).to.be.equal("ERROR");
+					done();
+			    }
+			);
+		});
+		it('should be BAD', function (done) {
+			request.send('ajax_test_bad.php').then(
+			    function (result) {
+					expect(result).to.be.equal("SUCCESS");
+					done();
+			    },
+			    function (err) {
+			    	console.log(err);
+			    	expect(err.status).to.be.equal(400);
+					expect(err.responseText).to.be.equal("BAD");
+					done();
+			    }
+			);
+		});
+		it('should be object', function () {
+			expect(typeof request.send('ajax_test_success.php')).to.equal('object');
 		});
 	});
 });
 
-describe('Request', function() {
+describe('Chart', function() {
 
 	describe('TODO', function () {
 		it('TODO', function () {
