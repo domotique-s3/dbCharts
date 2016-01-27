@@ -20,18 +20,30 @@ function Parser () {
 	 * @param  {string} url 
 	 * @return {Object}     
 	 */
-	var getSensorsByTable = function (url) {
-		var regex = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
+	 var getSensorsByTable = function (url) {
 		var res;
-
 		var rtn = {};
 
+		var regex = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
 		while ((res = regex.exec(url)) !== null) {
 		    if (res.index === regex.lastIndex) {
 		        regex.lastIndex++;
 		    }
 		    rtn[res[1]] = res[2];
 		}
+
+		regex = /sensors\[([^\]]*)\]\[\]=(\d+_?\D?,*)/gmi; 
+	 	while ((res = regex.exec(url)) !== null) {
+	 		if (res.index === regex.lastIndex) {
+	 			regex.lastIndex++;
+	 		}
+	 		if(rtn[res[1]] === undefined || rtn[res[1]] === null){
+	 			rtn[res[1]] = '';
+	 		}
+	 		rtn[res[1]] += (',' + res[2]);
+		}
+
+		console.log(rtn);
 
 		return rtn;
 	};
@@ -42,7 +54,7 @@ function Parser () {
 	 * @return {Array}
 	 */	
 	var getSensorsByType = function (str) {
-		var regex = /(\d)_(\D)/gmi; 
+		var regex = /(\d+)_?(\D?)/gmi; 
 		var res;
 		 
 		var rtn = {};
@@ -61,6 +73,8 @@ function Parser () {
 		    else
 		    	rtn[res[1]] = 'line';
 		}
+
+		console.log(rtn);
 
 		return rtn;
 	};
@@ -123,12 +137,13 @@ function Parser () {
 	 * @return {string}
 	 */
 	this.removeSensorsType = function (str) {
-		var regex_replace = /(\d)_(\D)/gmi; 
+		var regex_replace = /(\d+)_?(\D?)/gmi; 
 		var regex_findSensor = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
 
 		var res;
 		var replace = [];
 
+		/*In case : sensors[table]=[9_b, 15_c]*/
 		while ((res = regex_findSensor.exec(str)) !== null) {
 		    if (res.index === regex_findSensor.lastIndex) {
 		        regex_findSensor.lastIndex++;
@@ -139,10 +154,22 @@ function Parser () {
 		    });
 		}
 
+		/*In case : sensors[table][]=9_b*/
+		regex_findSensor = /sensors\[([^\]]*)\]\[\]=(\d+_?\D?,*)/gmi; 
+	 	while ((res = regex_findSensor.exec(str)) !== null) {
+	 		if (res.index === regex_findSensor.lastIndex) {
+	 			regex_findSensor.lastIndex++;
+	 		}
+		    replace.push({
+		    	origin : res[0],
+		    	sensor : res[2]
+		    });
+		}
+
 		$.each(replace, function(index, val) {
 			str = str.replace(val.origin, val.origin.replace(val.sensor, val.sensor.replace(regex_replace, '$1')));
 		});
-
+		console.log(str);
 		return str;
 	};
 }

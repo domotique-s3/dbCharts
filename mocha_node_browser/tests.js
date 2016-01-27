@@ -25,50 +25,94 @@ describe('Parser', function() {
 	describe('remove_sensors_type', function () {
 
 		var url = 'index.html?sensors[table1]=[1_l,2_b,3_f,4_c]&sensors[table2]=[5_l,6_g,7_r,8_b]&chartTitle=test&sensorsColumn=value';
-		var result = parser.removeSensorsType(url);
-		
-		it('result should be a string', function () {
-			expect(result).to.be.a("string");
+		describe('In case url = sensors[table]=[9_b, 11_c]', function(){
+			var result = parser.removeSensorsType(url);
+			
+			it('result should be a string', function () {
+				expect(result).to.be.a("string");
+			});
+			it('In this case, result should be \'sensors[table1]=[9,11]\'', function () {
+				expect(result).to.equal("index.html?sensors[table1]=[1,2,3,4]&sensors[table2]=[5,6,7,8]&chartTitle=test&sensorsColumn=value");
+			});
 		});
-		it('In this case, result should be \'sensors[table1]=[1,2,3,4]&sensors[table2]=[5,6,7,8]&\'', function () {
-			expect(result).to.equal("index.html?sensors[table1]=[1,2,3,4]&sensors[table2]=[5,6,7,8]&chartTitle=test&sensorsColumn=value");
+
+		url = 'index.html?sensors[table1][]=1_b&sensors[table1][]=3_b&sensors[table1][]=45_c&sensors[table2][]=7_b&sensors[table2][]=9_b&chartTitle=test&sensorsColumn=value';
+		describe('In case url = sensors[table][ ]=9_b', function(){
+			var result = parser.removeSensorsType(url);
+			
+			it('result should be a string', function () {
+				expect(result).to.be.a("string");
+			});
+			it('In this case, result should be \'sensors[table][ ]=9\'', function () {
+				expect(result).to.equal("index.html?sensors[table1][]=1&sensors[table1][]=3&sensors[table1][]=45&sensors[table2][]=7&sensors[table2][]=9&chartTitle=test&sensorsColumn=value");
+			});
 		});
 	});
 
 	describe('get_type', function () {
+		describe('In case url = sensors[table]=[9_b, 11_c]', function () {	
+			var url = 'sensors[table1]=[1_l,2_b,3_f,4_c]&sensors[table2]=[5_l,6_g,7_r,8_b]&';
+			var result = parser.getType(url);
+			it('result shoud be an object', function () {
+				expect(result).to.be.a('object');
+			});
+			it('result shoud have property table1 and table2', function () {
+				expect(result).to.have.property('table1');
+				expect(result).to.have.property('table2');
+			});
+			it('result.table1 and result.table2 should be object', function () {
+				expect(result.table1,result.table2).to.be.a('object');
+			});
+			it('result.table1[x] and result.table2[x] should exist', function () {
+				expect(result.table1[1]).to.exist;
+				expect(result.table1[2]).to.exist;
+				expect(result.table1[3]).to.exist;
+				expect(result.table1[4]).to.exist;
+				expect(result.table2[5]).to.exist;
+				expect(result.table2[6]).to.exist;
+				expect(result.table2[7]).to.exist;
+				expect(result.table2[8]).to.exist;
+			});
+			it('In this case, result.table1[0].id and result.table1[0].type should be 1 and l', function () {
+				expect(result.table1[1]).to.equal('line');
+				expect(result.table1[2]).to.equal('binary');
+				expect(result.table1[3]).to.equal('line');
+				expect(result.table1[4]).to.equal('column');
+				expect(result.table2[5]).to.equal('line');
+				expect(result.table2[6]).to.equal('line');
+				expect(result.table2[7]).to.equal('line');
+				expect(result.table2[8]).to.equal('binary');
+			});
+		});
 
-		var url = 'sensors[table1]=[1_l,2_b,3_f,4_c]&sensors[table2]=[5_l,6_g,7_r,8_b]&';
-		var result = parser.getType(url);
+		describe('In case url = sensors[table][ ]=9_b', function () {
+			url = 'index.html?sensors[table1][]=1_b&sensors[table1][]=3_c&sensors[table1][]=45_l&sensors[table2][]=7_r&sensors[table2][]=9_l&chartTitle=test&sensorsColumn=value';
+			result = parser.getType(url);
 
-		it('result shoud be an object', function () {
-			expect(result).to.be.a('object');
-		});
-		it('result shoud have property table1 and table2', function () {
-			expect(result).to.have.property('table1');
-			expect(result).to.have.property('table2');
-		});
-		it('result.table1 and result.table2 should be object', function () {
-			expect(result.table1,result.table2).to.be.a('object');
-		});
-		it('result.table1[x] and result.table2[x] should exist', function () {
-			expect(result.table1[1]).to.exist;
-			expect(result.table1[2]).to.exist;
-			expect(result.table1[3]).to.exist;
-			expect(result.table1[4]).to.exist;
-			expect(result.table2[5]).to.exist;
-			expect(result.table2[6]).to.exist;
-			expect(result.table2[7]).to.exist;
-			expect(result.table2[8]).to.exist;
-		});
-		it('In this case, result.table1[0].id and result.table1[0].type should be 1 and l', function () {
-			expect(result.table1[1]).to.equal('line');
-			expect(result.table1[2]).to.equal('binary');
-			expect(result.table1[3]).to.equal('line');
-			expect(result.table1[4]).to.equal('column');
-			expect(result.table2[5]).to.equal('line');
-			expect(result.table2[6]).to.equal('line');
-			expect(result.table2[7]).to.equal('line');
-			expect(result.table2[8]).to.equal('binary');
+			it('result shoud be an object', function () {
+				expect(result).to.be.a('object');
+			});
+			it('result shoud have property table1 and table2', function () {
+				expect(result).to.have.property('table1');
+				expect(result).to.have.property('table2');
+			});
+			it('result.table1 and result.table2 should be object', function () {
+				expect(result.table1,result.table2).to.be.a('object');
+			});
+			it('result.table1[x] and result.table2[x] should exist', function () {
+				expect(result.table1[1]).to.exist;
+				expect(result.table1[3]).to.exist;
+				expect(result.table1[45]).to.exist;
+				expect(result.table2[7]).to.exist;
+				expect(result.table2[9]).to.exist;
+			});
+			it('In this case, result.table1[0].id and result.table1[0].type should be 1 and l', function () {
+				expect(result.table1[1]).to.equal('binary');
+				expect(result.table1[3]).to.equal('column');
+				expect(result.table1[45]).to.equal('line');
+				expect(result.table2[7]).to.equal('line');
+				expect(result.table2[9]).to.equal('line');
+			});
 		});
 	});
 
@@ -112,7 +156,7 @@ describe('Parser', function() {
 				'30' : 'column',
 				'40' : 'line',
 			}
-		}
+		};
 
 		var format = parser.responseForChart(response, type);
 
