@@ -13,6 +13,97 @@ var should = chai.should();
 
 var parser = new Parser();
 var request = new Request();
+var chart = new Chart();
+
+response = {
+	'table1' : {
+	    '7' : [{   
+	        value : 10,
+	        timestamp : 14489540040.4
+	    }, 
+	    {
+	        value: 6,
+	        timestamp : 14494540640.6
+	    },
+	    {   
+	        value : 16,
+	        timestamp : 14499043040.4
+	    }, 
+	    {
+	        value: 14,
+	        timestamp : 14501044640.6
+	    }],
+	},
+	'table2' : {
+	    '2' : [{   
+	        value : 0,
+	        timestamp : 14490040040.4
+	    }, 
+	    {
+	        value: 1,
+	        timestamp : 14495040640.6
+	    },
+	    {   
+	        value : 0,
+	        timestamp : 14499043040.4
+	    }, 
+	    {
+	        value: 1,
+	        timestamp : 14501044640.6
+	    },
+	    {
+	        value: 0,
+	        timestamp : 14501054640.6
+	    }],
+	    '15' : [{
+	        value: 5,
+	        timestamp : 14488040070.6
+	    },
+	    {   
+	        value : 10,
+	        timestamp : 14490040000.4
+	    }, 
+	    {
+	        value: 12,
+	        timestamp : 14491040070.6
+	    },
+	    {   
+	        value : 4,
+	        timestamp : 14492040640.4
+	    }, 
+	    {
+	        value: 8,
+	        timestamp : 14495040640.6
+	    },
+	    {   
+	        value : 6,
+	        timestamp : 14496040640.4
+	    }, 
+	    {
+	        value: 13,
+	        timestamp : 14496540640.6
+	    },
+	    {   
+	        value : 2,
+	        timestamp : 14498406400.4
+	    }, 
+	    {
+	        value: 1,
+	        timestamp : 14500040640.6
+	    }]
+	}
+}
+
+
+var type = {
+	'table1' : {
+		'7' : 'line'
+	},
+	'table2' : {
+		'2' : 'binary',
+		'15' : 'column'
+	}
+};
 
 describe('Parser', function() {
 
@@ -120,47 +211,6 @@ describe('Parser', function() {
 	});
 
 	describe('response_for_chart', function () {
-
-		var response = {
-			'table1' : {
-				'10' : [{
-					value : 10.3,
-					timestamp : 1414141414.254
-				}],
-				'20' : [{
-					value : 20.5,
-					timestamp : 1414141414.254
-				},{
-					value : 20.6,
-					timestamp : 1414141414.254
-				}]
-			},
-			'table2' : {
-				'30' : [{
-					value : 30.2,
-					timestamp : 1414141414.254
-				},{
-					value : 30.3,
-					timestamp : 1414141414.254
-				}],
-				'40' : [{
-					value : 40.6,
-					timestamp : 1414141414.254
-				}]
-			}
-		};
-
-		var type = {
-			'table1' : {
-				'10' : 'binary',
-				'20' : 'line'
-			},
-			'table2' : {
-				'30' : 'column',
-				'40' : 'line',
-			}
-		};
-
 		var format = parser.responseForChart(response, type);
 
 		it('response should be an array', function(){
@@ -171,10 +221,9 @@ describe('Parser', function() {
 			expect(format[0],format[1],format[2],format[3]).to.have.property('name');
 		});
 		it('name should be table1.10 (table name + sensor id)', function(){
-			expect(format[0].name).to.equal('table1.10');
-			expect(format[1].name).to.equal('table1.20');
-			expect(format[2].name).to.equal('table2.30');
-			expect(format[3].name).to.equal('table2.40');
+			expect(format[0].name).to.equal('table1.7');
+			expect(format[1].name).to.equal('table2.2');
+			expect(format[2].name).to.equal('table2.15');
 		});
 		it('format[x].data == array', function(){
 			expect(format[0].data).to.be.a('array');
@@ -182,21 +231,42 @@ describe('Parser', function() {
 		it('return.data[x].length == 2', function(){
 			expect(format[0].data[0]).to.have.length(2);
 		});
-		it('timestamp for chart should be timestamp / 100', function(){
-			expect(format[0].data[0][0]).to.equal(response.table1['10'][0].timestamp / 100);
+		it('timestamp for chart should be timestamp * 100', function(){
+			console.log(format[0].data[0]);
+			expect(format[0].data[0][0]).to.equal(response.table1['7'][0].timestamp * 100);
 		});
-		it('type for sensor table1.10 should have property step and type', function(){
-			expect(format[0]).to.have.property('step');
-			expect(format[0]).to.have.property('type');
+		it('type for sensor table1.7 should have property step and type', function(){
+			expect(format[1]).to.have.property('step');
+			expect(format[1]).to.have.property('type');
 		});
-		it('sensors table1.10 step and type should be left and line', function () {
-			expect(format[0].step).to.equal('left');
-			expect(format[0].type).to.equal('line');
+		it('sensors table2.2 step and type should be left and line', function () {
+			expect(format[1].step).to.equal('left');
+			expect(format[1].type).to.equal('line');
 		});
-		it('sensors table2.30 step and type should be undefined and column', function () {
+		it('sensors table2.15 step and type should be undefined and column', function () {
 			expect(format[2].type).to.equal('column');
 			expect(format[2].step).to.equal(undefined);
 		});
+	});
+});
+
+describe('Chart', function() {
+	describe('construct', function () {
+
+		var data = parser.responseForChart(response, type);
+		chart.construct('Test', data, 'chart');
+		$('#chart').hide();
+
+		it('Chart should be an object', function () {
+			expect(typeof chart).to.equal('object');
+		});
+		it('Chart should exist', function () {
+			expect($('.highcharts-container')).to.exist;
+		});
+		it('Chart Title should be \'test\'', function () {
+			expect($('.highcharts-title').text()).to.equal('Test');
+		});
+
 	});
 });
 
@@ -245,15 +315,6 @@ describe('Request', function() {
 		});
 		it('should be object', function () {
 			expect(typeof request.send('ajax_test_success.php')).to.equal('object');
-		});
-	});
-});
-
-describe('Chart', function() {
-
-	describe('TODO', function () {
-		it('TODO', function () {
-			expect('TODO').to.equal('');
 		});
 	});
 });
