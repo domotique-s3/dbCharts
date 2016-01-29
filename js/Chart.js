@@ -1,12 +1,15 @@
+/*global
+Highcharts
+ */
 function Chart () {
-
+	'use strict';
 	/**
 	 * Construct a chart in the container provides in parameters
 	 * with the data and title provide
 	 * @title 		{String}
 	 * @data 		{array}
 	 * @container 	{String}
-	 * @return 		{HighChart Object}
+	 * @return 		{Highcharts.Chart}
 	 */
 	this.construct = function(title, data, container){
 		var options = {
@@ -27,8 +30,6 @@ function Chart () {
 		    xAxis: { type: 'datetime' },
 		    series: data
 		};
-		var chart = new Highcharts.Chart(options);
-		return chart;
-	};
+		return new Highcharts.Chart(options);};
 
 }
