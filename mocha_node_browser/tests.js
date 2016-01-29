@@ -5,7 +5,7 @@
 /*jshint -W030*/
 
 "use strict";
-if (require === 'undefined') {
+if (typeof require !== 'undefined') {
     var chai = require('chai');
 
     var fs = require('fs');
