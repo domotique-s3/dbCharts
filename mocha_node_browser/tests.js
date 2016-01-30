@@ -329,15 +329,17 @@ describe('Request', function () {
 
 describe('Error Manager', function () {
     errm.display({
-        "error": [
+        "errors":[
             {
-                "error_code": "notValid",
-                "message": "table is not a valid table name",
-                "where": "table"
-            }, {
-                "error_code": "notATable",
-                "message": "table is not one",
-                "where": "table"
+                "key": "<attribute1>",
+                "code": "xxx",
+                "message": "Message 1"
+            },
+            {
+                "type": "key",
+                "key": "<attribute2>",
+                "code": "xxx",
+                "message": "Message 1"
             }
         ]
     });

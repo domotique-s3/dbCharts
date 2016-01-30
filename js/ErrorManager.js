@@ -4,9 +4,10 @@ $
  */
 function ErrorManager() {
     'use strict';
-    var code = 'error_code',
-        mess = 'message',
-        where = 'where';
+    var code = 'code',
+        key = 'key',
+        message = 'message',
+        error_type = 'type';
     /**
      * Display error(s) provide(s) in parameter
      * @errors {Object - Array}
@@ -20,11 +21,14 @@ function ErrorManager() {
         div.setAttribute('tabindex', '-1');
         div.setAttribute('role', 'dialog');
         div.setAttribute('aria-labelledby', 'myModalLabel');
-        $(errors.error).each(function () {
-            res += '<tr><td>' + this[code] + '</td><td>' + this[mess] + '</td><td>' + this[where] + '</td></tr>';
+        $(errors.errors).each(function () {
+            var type;
+            if(this[error_type] === undefined) type = 'value';
+            else type = this[error_type];
+            res += '<tr><td>'+type+'</td><td>' + this[code] + '</td><td>' + this[key] + '</td><td>' + this[message] + '</td></tr>';
         });
-        var table = '<table class="table" id="error-table"><thead><th>Code</th><th>Message</th><th>Where</th></thead>' + res + '</table>';
-        div.innerHTML = '<div class="modal-dialog" role="document"><div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">;</span></button> <h4 class="modal-title myModalLabel">Errors</h4> </div> <div class="modal-body">' + table + '<br/> </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">OK</button> </div> </div> </div>';
+        var table = '<table class="table" id="error-table"><thead><th>Type</th><th>Code</th><th>Key</th><th>Message</th></thead>' + res + '</table>';
+        div.innerHTML = '<div class="modal-dialog" role="document"><div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">;</span></button> <h4 class="modal-title myModalLabel" style="color: red;font-weight: bold">Errors</h4> </div> <div class="modal-body">' + table + '<br/> </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">OK</button> </div> </div> </div>';
         $(div).modal('show');
     };
 }
