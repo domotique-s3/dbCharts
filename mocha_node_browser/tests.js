@@ -22,6 +22,8 @@ var parser = new Parser();
 var request = new Request();
 var chart = new Chart();
 var errm = new ErrorManager();
+var app = new Application();
+app.launch();
 
 var response = {
     'table1': {
@@ -128,25 +130,25 @@ describe('Parser', function () {
 
         var url = 'index.html?sensors[table1]=[1_l,2_b,3_f,4_c]&sensors[table2]=[5_l,6_g,7_r,8_b]&chartTitle=test&sensorsColumn=value';
         describe('In case url = sensors[table]=[9_b, 11_c]', function () {
-            var result = parser.removeSensorsType(url);
+            var result = parser.getQueryString(url);
 
             it('result should be a string', function () {
                 expect(result).to.be.a("string");
             });
             it('In this case, result should be \'sensors[table1]=[9,11]\'', function () {
-                expect(result).to.equal("index.html?sensors[table1]=[1,2,3,4]&sensors[table2]=[5,6,7,8]&chartTitle=test&sensorsColumn=value");
+                expect(result).to.equal("sensors[table1]=[1,2,3,4]&sensors[table2]=[5,6,7,8]&chartTitle=test&sensorsColumn=value");
             });
         });
 
         url = 'index.html?sensors[table1][]=1_b&sensors[table1][]=3_b&sensors[table1][]=45_c&sensors[table2][]=7_b&sensors[table2][]=9_b&chartTitle=test&sensorsColumn=value';
         describe('In case url = sensors[table][ ]=9_b', function () {
-            var result = parser.removeSensorsType(url);
+            var result = parser.getQueryString(url);
 
             it('result should be a string', function () {
                 expect(result).to.be.a("string");
             });
             it('In this case, result should be \'sensors[table][ ]=9\'', function () {
-                expect(result).to.equal("index.html?sensors[table1][]=1&sensors[table1][]=3&sensors[table1][]=45&sensors[table2][]=7&sensors[table2][]=9&chartTitle=test&sensorsColumn=value");
+                expect(result).to.equal("sensors[table1][]=1&sensors[table1][]=3&sensors[table1][]=45&sensors[table2][]=7&sensors[table2][]=9&chartTitle=test&sensorsColumn=value");
             });
         });
     });
@@ -240,7 +242,6 @@ describe('Parser', function () {
             expect(format[0].data[0]).to.have.length(2);
         });
         it('timestamp for chart should be timestamp * 100', function () {
-            console.log(format[0].data[0]);
             expect(format[0].data[0][0]).to.equal(response.table1['7'][0].timestamp * 100);
         });
         it('type for sensor table1.7 should have property step and type', function () {
@@ -280,7 +281,7 @@ describe('Chart', function () {
 
 describe('Request', function () {
 
-    describe('send', function () {
+    describe.skip('send', function () {
         it('should be SUCESS', function (done) {
             request.send('ajax_test_success.php').then(
                 function (result) {
@@ -300,7 +301,6 @@ describe('Request', function () {
                     done();
                 },
                 function (err) {
-                    console.log(err);
                     expect(err.status).to.be.equal(500);
                     expect(err.responseText).to.be.equal("ERROR");
                     done();
@@ -314,7 +314,6 @@ describe('Request', function () {
                     done();
                 },
                 function (err) {
-                    console.log(err);
                     expect(err.status).to.be.equal(400);
                     expect(err.responseText).to.be.equal("BAD");
                     done();

@@ -128,11 +128,23 @@ function Parser () {
 	};
 
 	/**
+	 * Return only the parameters in the url
+	 * @param  {string} url
+	 * @return {string} 
+	 */
+	this.getQueryString = function (url) {
+
+		var urlQueryString = removeSensorsType(url);
+		return urlQueryString.substr(urlQueryString.indexOf('?') + 1).trim();
+
+	};
+
+	/**
 	 * Remove sensors type in string (1_t)
 	 * @param  {string} str 
 	 * @return {string}
 	 */
-	this.removeSensorsType = function (str) {
+	var removeSensorsType = function (str) {
 		var regex_replace = /(\d+)_?(\D?)/gmi; 
 		var regex_findSensor = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
 
