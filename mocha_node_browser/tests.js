@@ -1,5 +1,5 @@
 /*global
- $, Parser, Request, Chart, ErrorManager, describe, it, be
+ $, Parser, Request, Chart, ErrorManager, describe, it, be, document
  */
 /*jslint node: true */
 /*jshint -W030*/
@@ -22,8 +22,6 @@ var parser = new Parser();
 var request = new Request();
 var chart = new Chart();
 var errm = new ErrorManager();
-var app = new Application();
-app.launch();
 
 var response = {
     'table1': {
@@ -281,7 +279,7 @@ describe('Chart', function () {
 
 describe('Request', function () {
 
-    describe.skip('send', function () {
+    describe('send', function () {
         it('should be SUCESS', function (done) {
             request.send('ajax_test_success.php').then(
                 function (result) {

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>dbCharts</title>
+
+	<!-- CSS DEPENDENCIES -->
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+
+    <!-- JS DEPENDENCIES -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/highcharts/highcharts.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+	<!-- JS CLASS -->
+    <script src="js/Parser.js"></script>
+    <script src="js/Request.js"></script>
+    <script src="js/Chart.js"></script>
+    <script src="js/ErrorManager.js"></script>
+    <script src="js/Application.js"></script>
+
+    <script type="text/javascript">
+    window.onload = function(){
+    	new Application().launch();
+    }
+    </script>
+
+</head>
+<body>
+	<div id="chart">
+		
+	</div>
+</body>
+</html>

@@ -133,10 +133,13 @@ function Parser () {
 	 * @return {string} 
 	 */
 	this.getQueryString = function (url) {
-
 		var urlQueryString = removeSensorsType(url);
-		return urlQueryString.substr(urlQueryString.indexOf('?') + 1).trim();
-
+		if(!(urlQueryString.indexOf('?') == -1)){
+			return urlQueryString.substr(urlQueryString.indexOf('?') + 1).trim();
+		} else {
+			return '';
+		}
+		
 	};
 
 	/**

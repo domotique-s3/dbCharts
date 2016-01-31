@@ -7,27 +7,36 @@ function Application() {
 
 
 	this.launch = function () {
-		//url = window.location.href;
-		url = 'web/index.html?sensorIdColumn=sensor_id&valuesColumn=value&timestampColumn=timestamp&sensors[measurments]=[70_l,72_c]&startTime=1417962686.2894&endTime=141818181881.2399';
+		url = window.location.href;
 		queryString = parser.getQueryString(url);
-		console.log('PARAMETERS : ', queryString);
+		console.info('PARAMETERS : ', queryString);
+
+		if(queryString == ''){
+			new ErrorManager().createModal('You have to provide some parameters in URL </br> Example : sensorIdColumn=sensor_id&valuesColumn=value&timestampColumn=timestamp&sensors[measurments]=[70_l,72_c]&startTime=1417962686.2894&endTime=141818181881.2399');
+			throw new Error("No parameters given");
+		}
 		
 		type = parser.getType(url);
-		console.log("RESUME : ", type);
+		console.info("RESUME : ", type);
 		
 
-        request.send('dbCharts.php', queryString).then(
+        new Request().send('dbCharts.php', queryString).then(
             function (result) {
             	//SUCCESS
-            	var data = JSON.parse(result.responseText);
             	data = parser.responseForChart(data, type);
             	var chart = new Chart().construct(parser.getTitle(queryString), data, 'chart');
             	addEventOnChart(chart);
             },
             function (err) {
             	//FAIL - 4xx - 5xx
-            	var errors = JSON.parse(err);
-            	new ErrorManager.display(errors);
+            	if(err.status === 404){
+            		new ErrorManager().createModal('The expected file was not found');
+					throw new Error("Can't find the expected file");
+            	}
+            	if(err.status = 400){
+            		new ErrorManager().display(err);
+            	}
+				throw new Error("An error was occured");
             }
         );
 	};
