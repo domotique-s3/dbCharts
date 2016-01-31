@@ -351,7 +351,15 @@ describe('Error Manager', function () {
         it('Table should have two rows', function () {
             expect($('#error-table').find('tbody')[0].rows.length).to.be.equal(2);
         });
-    });
+        it('We have to get 4 columns', function (){
+            expect($('th').length).to.be.equal(4);
+        });
+        it('Type is correctly filled', function(){
+            var type_input = $('.type');
+            expect($(type_input[0]).text()).to.be.equal("value");
+            expect($(type_input[1]).text()).to.be.equal("key");
+            });
+        });
 });
 
 
