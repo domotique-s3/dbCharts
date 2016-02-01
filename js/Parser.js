@@ -54,7 +54,7 @@ function Parser () {
 	/**
 	 * Return sensors' id associated to their type
 	 * @param  {string} str 
-	 * @return {array}
+	 * @return {object}
 	 */	
 	var getSensorsByType = function (str) {
 		var regex = /(\d+)_?(\D?)/gmi; 
@@ -76,7 +76,6 @@ function Parser () {
 		    else
             {rtn[res[1]] = 'line';}
 		}
-
 		return rtn;
 	};
 
@@ -171,7 +170,7 @@ function Parser () {
 		}
 
 		/*In case : sensors[table][]=9_b*/
-		regex_findSensor = /sensors\[([^\]]*)\]\[\]=(\d+_?\D?,*)/gmi; 
+		regex_findSensor = /sensors\[([^\]]*)\]\[\]=(\d+_?\D?,*)/gmi;
 	 	while ((res = regex_findSensor.exec(str)) !== null) {
 	 		if (res.index === regex_findSensor.lastIndex) {
 	 			regex_findSensor.lastIndex++;

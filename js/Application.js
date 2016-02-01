@@ -24,7 +24,7 @@ function Application() {
 		
 
         new Request().send('dbCharts.php', queryString).then(
-            function (/*result*/) {
+            function (data) {
             	//SUCCESS
             	data = parser.responseForChart(data, type);
             	var chart = new Chart().construct(parser.getTitle(queryString), data, 'chart');
