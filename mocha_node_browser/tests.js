@@ -281,7 +281,7 @@ describe('Chart', function () {
             expect(typeof chart).to.equal('object');
         });
         it('Chart should exist', function () {
-            expect(document.getElementsByClassName('highcharts-container')[0]).to.exist;
+            expect($('.highcharts-container')[0]).to.exist;
         });
         it('Chart Title should be \'test\'', function () {
             expect($('.highcharts-title').text()).to.equal('Test');
