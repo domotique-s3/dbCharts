@@ -1,5 +1,8 @@
+/*global
+    Parser, console, ErrorManager, Request, $, Chart
+ */
 function Application() {
-
+    'use strict';
 	var url = '';
 	var queryString = '';
 	var type = {};
@@ -11,7 +14,7 @@ function Application() {
 		queryString = parser.getQueryString(url);
 		console.info('PARAMETERS : ', queryString);
 
-		if(queryString == ''){
+		if(queryString === ''){
 			new ErrorManager().createModal('You have to provide some parameters in URL </br> Example : sensorIdColumn=sensor_id&valuesColumn=value&timestampColumn=timestamp&sensors[measurments]=[70_l,72_c]&startTime=1417962686.2894&endTime=141818181881.2399');
 			throw new Error("No parameters given");
 		}
@@ -21,7 +24,7 @@ function Application() {
 		
 
         new Request().send('dbCharts.php', queryString).then(
-            function (result) {
+            function (/*result*/) {
             	//SUCCESS
             	data = parser.responseForChart(data, type);
             	var chart = new Chart().construct(parser.getTitle(queryString), data, 'chart');
@@ -33,10 +36,10 @@ function Application() {
             		new ErrorManager().createModal('The expected file was not found');
 					throw new Error("Can't find the expected file");
             	}
-            	if(err.status = 400){
+            	if(err.status === 400){
             		new ErrorManager().display(err);
             	}
-				throw new Error("An error was occured");
+				throw new Error("An error occurred");
             }
         );
 	};

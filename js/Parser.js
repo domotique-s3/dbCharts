@@ -1,4 +1,9 @@
+/*global
+    $
+ */
+
 function Parser () {
+	'use strict';
 	
 	/**
 	 * Return the chart's title
@@ -10,9 +15,9 @@ function Parser () {
 		var title = url.match(regex);
 
 		if(title !== null)
-			return title[1];
+        {return title[1];}
 		else
-			return "";
+        {return "";}
 	};
 
 	/**
@@ -24,7 +29,7 @@ function Parser () {
 		var res;
 		var rtn = {};
 
-		var regex = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
+		var regex = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi;
 		while ((res = regex.exec(url)) !== null) {
 		    if (res.index === regex.lastIndex) {
 		        regex.lastIndex++;
@@ -40,7 +45,7 @@ function Parser () {
 	 		if(rtn[res[1]] === undefined || rtn[res[1]] === null){
 	 			rtn[res[1]] = '';
 	 		}
-	 		rtn[res[1]] += (',' + res[2]);
+	 		rtn[res[1]] += ',' + res[2];
 		}
 
 		return rtn;
@@ -49,7 +54,7 @@ function Parser () {
 	/**
 	 * Return sensors' id associated to their type
 	 * @param  {string} str 
-	 * @return {Array}
+	 * @return {array}
 	 */	
 	var getSensorsByType = function (str) {
 		var regex = /(\d+)_?(\D?)/gmi; 
@@ -63,13 +68,13 @@ function Parser () {
 		    }
 
 		    if(res[2] === 'l' || res[2] === 'line')
-		    	rtn[res[1]] = 'line';
+            {rtn[res[1]] = 'line';}
 		    else if(res[2] === 'b' || res[2] === 'binary')
-		    	rtn[res[1]] = 'binary';
+            {rtn[res[1]] = 'binary';}
 		    else if(res[2] === 'c' || res[2] === 'column')
-		    	rtn[res[1]] = 'column';
+            {rtn[res[1]] = 'column';}
 		    else
-		    	rtn[res[1]] = 'line';
+            {rtn[res[1]] = 'line';}
 		}
 
 		return rtn;
@@ -109,7 +114,7 @@ function Parser () {
 			    	!(typeof type[tableName] === 'undefined' || type[tableName] === null) &&
 			    	!(typeof type[tableName][id] === 'undefined' || type[tableName][id] === null)
 			    ){
-			    	if(type[tableName][id] == 'binary'){
+			    	if(type[tableName][id] === 'binary'){
 			    		temp.type = "line";
 			    		temp.step = 'left';
 			    	} else {
@@ -134,7 +139,7 @@ function Parser () {
 	 */
 	this.getQueryString = function (url) {
 		var urlQueryString = removeSensorsType(url);
-		if(!(urlQueryString.indexOf('?') == -1)){
+		if(urlQueryString.indexOf('?') !== -1){
 			return urlQueryString.substr(urlQueryString.indexOf('?') + 1).trim();
 		} else {
 			return '';

@@ -5,13 +5,18 @@
 /*jshint -W030*/
 
 "use strict";
+/*global
+    require, readFileSync, runInThisContext
+ */
 if (typeof require !== 'undefined') {
     var chai = require('chai');
 
     var fs = require('fs');
     var vm = require('vm');
     var path = './js/Parser.js';
+    //noinspection JSUnresolvedFunction
     var code = fs.readFileSync(path);
+    //noinspection JSUnresolvedFunction
     vm.runInThisContext(code);
 }
 
@@ -152,6 +157,9 @@ describe('Parser', function () {
     });
 
     describe('get_type', function () {
+        /**
+         * @param {{be:string}} data
+         */
         describe('In case url = sensors[table]=[9_b, 11_c]', function () {
             var url = 'sensors[table1]=[1_l,2_b,3_f,4_c]&sensors[table2]=[5_l,6_g,7_r,8_b]&';
             var result = parser.getType(url);
@@ -165,6 +173,8 @@ describe('Parser', function () {
             it('result.table1 and result.table2 should be object', function () {
                 expect(result.table1, result.table2).to.be.a('object');
             });
+
+            //noinspection BadExpressionStatementJS
             it('result.table1[x] and result.table2[x] should exist', function () {
                 expect(result.table1[1]).to.exist;
                 expect(result.table1[2]).to.exist;
@@ -219,6 +229,9 @@ describe('Parser', function () {
     });
 
     describe('response_for_chart', function () {
+        /**
+         * @param {{have}} data
+         */
         var format = parser.responseForChart(response, type);
 
         it('response should be an array', function () {
