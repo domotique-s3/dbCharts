@@ -21,15 +21,20 @@ Lancer les commandes suivantes a la racine du projet :
 
 **WINDOWS** ou **UNIX** :
 
- 1. `npm install -g mocha`
- 2. `npm install`
+### Prod
+
+`npm install --prod`
+
+### Dev
+
+`npm install`
 
 ## Utilisation
 
+### Prod
+
+Ouvrir dans votre navigateur le index.html présent à la racine du projet
+
+### Dev
+
 Ouvrir dans votre navigateur le index.html présent dans mocha_node_browser
-
-*ou*
-
-Lancer la commande `mocha mocha_node_browser/tests.js` qui executera tout les tests
-
-**Attention** : le mode console ne permet pas l'utilisation de JQuery

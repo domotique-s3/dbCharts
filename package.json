@@ -18,10 +18,15 @@
     "type": "git",
     "url": "git+https://github.com/domotique-s3/dbCharts.git"
   },
-  "author": "kbn1",
+  "author": "armya",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/domotique-s3/dbCharts/issues"
   },
-  "homepage": "https://github.com/domotique-s3/dbCharts#readme"
+  "homepage": "https://github.com/domotique-s3/dbCharts#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "highcharts": "^4.2.1",
+    "jquery": "^2.2.0"
+  }
 }
