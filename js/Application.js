@@ -40,7 +40,8 @@ function Application() {
         new Request().send(dbData_path, queryString).then(
             function (data) {
             	//SUCCESS
-            	data = parser.responseForChart(data, type);
+            	console.log(JSON.parse(data));
+            	data = parser.responseForChart(JSON.parse(data), type);
             	var chart = new Chart().construct(parser.getTitle(queryString), data, 'chart');
             	addEventOnChart(chart);
             },
