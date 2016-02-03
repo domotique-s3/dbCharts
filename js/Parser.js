@@ -122,7 +122,7 @@ function Parser () {
 			    }
 
 			    $.each(series, function(k, serie) {
-			        temp.data.push([parseFloat(serie.timestamp) * 100, parseFloat(serie.value)]);
+			        temp.data.push([parseFloat(serie.timestamp) * 1000, parseFloat(serie.value)]);
 			    });
 			    
 			    formattedSensors.push(temp);
