@@ -290,7 +290,7 @@ describe('Chart', function () {
     });
 });
 
-describe('Request', function () {
+describe.skip('Request', function () {
 
     describe('send', function () {
         it('should be SUCESS', function (done) {
@@ -338,21 +338,19 @@ describe('Request', function () {
 });
 
 describe('Error Manager', function () {
-    errm.display({
-        "errors":[
-            {
-                "key": "<attribute1>",
-                "code": "xxx",
-                "message": "Message 1"
-            },
-            {
-                "type": "key",
-                "key": "<attribute2>",
-                "code": "xxx",
-                "message": "Message 1"
-            }
-        ]
-    });
+    var errors = [{
+            "key": "<attribute1>",
+            "code": "xxx",
+            "message": "Message 1"
+        },
+        {
+            "type": "key",
+            "key": "<attribute2>",
+            "code": "xxx",
+            "message": "Message 1"
+        }
+    ]
+    errm.display(errors);
     $('#error-modal').modal('hide');
     describe('display', function () {
         it('Modal should exist', function () {

@@ -34,18 +34,25 @@ function ErrorManager() {
      * @return {void}
      */
     this.display = function (errors) {
-        var res = '';
-        $(errors.errors).each(function () {
-            var type;
-            if(this[error_type] === undefined) {type = 'value';}
-            else {type = this[error_type];}
-            res += '<tr><td class="type">'+type+'</td><td class="code">' + this[code] + '</td><td class="key">' + this[key] + '</td><td class="message">' + this[message] + '</td></tr>';
-        });
+        if(errors !== null && errors !== undefined){
+            var res = '';
+            $(errors).each(function () {
+                var type;
+                var key;
+                if(this[error_type] === undefined) {type = 'value';}
+                else {type = this[error_type];}
 
-        var table = '<table class="table" id="error-table"><thead><th>Type</th><th>Code</th><th>Key</th><th>Message</th></thead>' + res + '</table>';
+                if(this[key] === undefined) {key = '';}
+                else {key = this[key];}
 
-        this.createModal(table);
 
+                res += '<tr><td class="type">'+type+'</td><td class="code">' + this[code] + '</td><td class="key">' + key + '</td><td class="message">' + this[message] + '</td></tr>';
+            });
+
+            var table = '<table class="table" id="error-table"><thead><th>Type</th><th>Code</th><th>Key</th><th>Message</th></thead>' + res + '</table>';
+
+            this.createModal(table);
+        }
     };
 
 }
