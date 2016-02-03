@@ -67,8 +67,6 @@ function Parser () {
 		    if (res.index === regex.lastIndex) {
 		        regex.lastIndex++;
 		    }
-
-		    console.log(res);
 		    if(res[3] === 'l' || res[3] === 'line')
             {rtn[res[1]] = 'line';}
 		    else if(res[3] === 'b' || res[3] === 'binary')
@@ -139,52 +137,11 @@ function Parser () {
 	 * @return {string} 
 	 */
 	this.getQueryString = function (url) {
-		var urlQueryString = removeSensorsType(url);
-		if(urlQueryString.indexOf('?') !== -1){
-			return urlQueryString.substr(urlQueryString.indexOf('?') + 1).trim();
+		if(url.indexOf('?') !== -1){
+			return url.substr(url.indexOf('?') + 1).trim();
 		} else {
 			return '';
 		}
 		
-	};
-
-	/**
-	 * Remove sensors type in string (1_t)
-	 * @param  {string} str 
-	 * @return {string}
-	 */
-	var removeSensorsType = function (str) {
-		var regex_replace = /(\d+)(_([a-z]+))?/gmi; 
-		var regex_findSensor = /sensors\[([^\]]*)\]=\[((\d+(_[a-z]+)?,*)*)\]/gmi; 
-		var res;
-		var replace = [];
-
-		/*In case : sensors[table]=[9_b, 15_c]*/
-		while ((res = regex_findSensor.exec(str)) !== null) {
-		    if (res.index === regex_findSensor.lastIndex) {
-		        regex_findSensor.lastIndex++;
-		    }
-		    replace.push({
-		    	origin : res[0],
-		    	sensor : res[2]
-		    });
-		}
-
-		/*In case : sensors[table][]=9_b*/
-		regex_findSensor = /sensors\[([^\]]*)\]\[\]=(\d+(_[a-z]+)?)/gmi;
-	 	while ((res = regex_findSensor.exec(str)) !== null) {
-	 		if (res.index === regex_findSensor.lastIndex) {
-	 			regex_findSensor.lastIndex++;
-	 		}
-		    replace.push({
-		    	origin : res[0],
-		    	sensor : res[2]
-		    });
-		}
-
-		$.each(replace, function(index, val) {
-			str = str.replace(val.origin, val.origin.replace(val.sensor, val.sensor.replace(regex_replace, '$1')));
-		});
-		return str;
 	};
 }
