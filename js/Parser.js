@@ -29,7 +29,7 @@ function Parser () {
 		var res;
 		var rtn = {};
 
-		var regex = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi;
+		var regex = /sensors\[([^\]]*)\]=\[((\d+(_[a-z]+)?,*)*)\]/gmi;
 		while ((res = regex.exec(url)) !== null) {
 		    if (res.index === regex.lastIndex) {
 		        regex.lastIndex++;
@@ -37,7 +37,8 @@ function Parser () {
 		    rtn[res[1]] = res[2];
 		}
 
-		regex = /sensors\[([^\]]*)\]\[\]=(\d+_?\D?,*)/gmi; 
+		//case sensors[table][]=21
+		regex = /sensors\[([^\]]*)\]\[\]=(\d+(_[a-z]+)?)/gmi; 
 	 	while ((res = regex.exec(url)) !== null) {
 	 		if (res.index === regex.lastIndex) {
 	 			regex.lastIndex++;
@@ -57,7 +58,7 @@ function Parser () {
 	 * @return {object}
 	 */	
 	var getSensorsByType = function (str) {
-		var regex = /(\d+)_?(\D?)/gmi; 
+		var regex = /(\d+)(_([a-z]+))?/gmi; 
 		var res;
 		 
 		var rtn = {};
@@ -67,11 +68,12 @@ function Parser () {
 		        regex.lastIndex++;
 		    }
 
-		    if(res[2] === 'l' || res[2] === 'line')
+		    console.log(res);
+		    if(res[3] === 'l' || res[3] === 'line')
             {rtn[res[1]] = 'line';}
-		    else if(res[2] === 'b' || res[2] === 'binary')
+		    else if(res[3] === 'b' || res[3] === 'binary')
             {rtn[res[1]] = 'binary';}
-		    else if(res[2] === 'c' || res[2] === 'column')
+		    else if(res[3] === 'c' || res[3] === 'column')
             {rtn[res[1]] = 'column';}
 		    else
             {rtn[res[1]] = 'line';}
@@ -122,7 +124,7 @@ function Parser () {
 			    }
 
 			    $.each(series, function(k, serie) {
-			        temp.data.push([parseFloat(serie.timestamp) * 1000, parseFloat(serie.value)]);
+			        temp.data.push([parseFloat(serie.timestamp) * 100, parseFloat(serie.value)]);
 			    });
 			    
 			    formattedSensors.push(temp);
@@ -152,9 +154,8 @@ function Parser () {
 	 * @return {string}
 	 */
 	var removeSensorsType = function (str) {
-		var regex_replace = /(\d+)_?(\D?)/gmi; 
-		var regex_findSensor = /sensors\[([^\]]*)\]=\[((\d+_?\D?,*)*)\]/gmi; 
-
+		var regex_replace = /(\d+)(_([a-z]+))?/gmi; 
+		var regex_findSensor = /sensors\[([^\]]*)\]=\[((\d+(_[a-z]+)?,*)*)\]/gmi; 
 		var res;
 		var replace = [];
 
@@ -170,7 +171,7 @@ function Parser () {
 		}
 
 		/*In case : sensors[table][]=9_b*/
-		regex_findSensor = /sensors\[([^\]]*)\]\[\]=(\d+_?\D?,*)/gmi;
+		regex_findSensor = /sensors\[([^\]]*)\]\[\]=(\d+(_[a-z]+)?)/gmi;
 	 	while ((res = regex_findSensor.exec(str)) !== null) {
 	 		if (res.index === regex_findSensor.lastIndex) {
 	 			regex_findSensor.lastIndex++;
