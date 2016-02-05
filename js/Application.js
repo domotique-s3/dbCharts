@@ -12,7 +12,7 @@ function Application() {
 
 
 	this.launch = function () {
-		$.ajaxSetup({async:false});
+		$.ajaxSetup({async:false, cache: false});
 
 	    $.get('config.json', function(data) {
 	    	dbData_path = data.path;
