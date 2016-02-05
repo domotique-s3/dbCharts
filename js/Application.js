@@ -12,7 +12,7 @@ function Application() {
 
 
 	this.launch = function () {
-		$.ajaxSetup({async:false});
+		$.ajaxSetup({async:false, cache: false});
 
 	    $.get('config.json', function(data) {
 	    	dbData_path = data.path;
@@ -26,7 +26,6 @@ function Application() {
 
 		url = window.location.href;
 		queryString = parser.getQueryString(url);
-		console.info('PARAMETERS : ', queryString);
 
 		if(queryString === ''){
 			new ErrorManager().createModal('You have to provide some parameters in URL </br> Example : sensorIdColumn=sensor_id&valuesColumn=value&timestampColumn=timestamp&sensors[measurments]=[70_l,72_c]&startTime=1417962686.2894&endTime=141818181881.2399');
@@ -34,13 +33,11 @@ function Application() {
 		}
 		
 		type = parser.getType(url);
-		console.info("RESUME : ", type);
 		
 
         new Request().send(dbData_path, queryString).then(
             function (data) {
             	//SUCCESS
-            	console.log(JSON.parse(data));
             	data = parser.responseForChart(JSON.parse(data), type);
             	var chart = new Chart().construct(parser.getTitle(queryString), data, 'chart');
             	addEventOnChart(chart);
