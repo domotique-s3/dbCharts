@@ -28,7 +28,7 @@ function Application() {
 		queryString = parser.getQueryString(url);
 
 		if(queryString === ''){
-			new ErrorManager().createModal('You have to provide some parameters in URL </br> Example : sensorIdColumn=sensor_id&valuesColumn=value&timestampColumn=timestamp&sensors[measurments]=[70_l,72_c]&startTime=1417962686.2894&endTime=141818181881.2399');
+			new ErrorManager().createModal('You have to provide some parameters in URL </br> Example : sensorIdColumn=sensor_id&valuesColumn=value&amp;timestampColumn=timestamp&sensors[measurments]=[70_l,72_c]&start=1417962686.2894&end=141818181881.2399');
 			throw new Error("No parameters given");
 		}
 		

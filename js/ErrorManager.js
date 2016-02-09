@@ -5,7 +5,7 @@ $
 function ErrorManager() {
     'use strict';
     var code = 'code',
-        key = 'key',
+        field = 'field',
         message = 'message',
         error_type = 'type';
 
@@ -42,14 +42,13 @@ function ErrorManager() {
                 if(this[error_type] === undefined) {type = 'value';}
                 else {type = this[error_type];}
 
-                if(this[key] === undefined) {key = '';}
-                else {key = this[key];}
-
+                if(this[field] === undefined) {key = '';}
+                else {key = this[field];}
 
                 res += '<tr><td class="type">'+type+'</td><td class="code">' + this[code] + '</td><td class="key">' + key + '</td><td class="message">' + this[message] + '</td></tr>';
             });
 
-            var table = '<table class="table" id="error-table"><thead><th>Type</th><th>Code</th><th>Key</th><th>Message</th></thead>' + res + '</table>';
+            var table = '<table class="table" id="error-table"><thead><th>Type</th><th>Code</th><th>Field</th><th>Message</th></thead>' + res + '</table>';
 
             this.createModal(table);
         }
