@@ -38,7 +38,9 @@ function Application() {
         new Request().send(dbData_path, queryString).then(
             function (data) {
             	//SUCCESS
-            	data = parser.responseForChart(JSON.parse(data), type);
+				if(typeof data === 'string')
+					data = JSON.parse(data);
+            	data = parser.responseForChart(data, type);
             	var chart = new Chart().construct(parser.getTitle(queryString), data, 'chart');
             	addEventOnChart(chart);
             },
